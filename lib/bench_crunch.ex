@@ -6,8 +6,19 @@ defmodule BenchCrunch do
   @decode :decode
   @encode :encode
 
+  @doc """
+    Profiles elixir-json lib (JSON)
+  """
   def profile_json(file), do: profile_lib(JSON, file)
+
+  @doc """
+    Profiles jason lib (Jason)
+  """
   def profile_jason(file), do: profile_lib(Jason, file)
+
+  @doc """
+    Profiles Poison lib
+  """
   def profile_poison(file), do: profile_lib(Poison, file)
 
   def profile_lib(lib, file) do
@@ -87,7 +98,6 @@ defmodule BenchCrunch do
 
     validate_and_profile(lib, @decode, data_cb, bench_cb, validate_cb)
   end
-
 
   defp env(:bs) do
     case Mix.env() do
