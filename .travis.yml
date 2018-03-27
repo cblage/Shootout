@@ -1,0 +1,13 @@
+language: elixir
+env: MIX_ENV=test
+notifications:
+  recipients:
+    - carlos@carloslage.net
+elixir:
+  - 1.6
+script:
+  - mix format --check-formatted
+  - MIX_ENV=test mix test
+after_script:
+  - mix deps.get --only docs
+  - MIX_ENV=docs mix inch.report
