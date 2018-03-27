@@ -4,8 +4,8 @@ defmodule Shootout.Mixfile do
   def project do
     [ app: :shootout,
       version: "0.0.1",
-      elixir: "> 0.10.0",
-      deps: deps ]
+      elixir: "~> 1.6",
+      deps: deps() ]
   end
 
   # Configuration for the OTP application
@@ -18,15 +18,19 @@ defmodule Shootout.Mixfile do
   defp deps do
     [
       # JSON.encode type API (comment out the ones you're not testing.)
-      #{ :json, github: "cblage/elixir-json"},
-      { :jazz, github: "meh/jazz"},
+      #{ :json, "~> 1.0"},
+      { :json, github: "cblage/elixir-json", branch: "master"},
 
+      #{ :jazz, github: "meh/jazz"},
+      #{:exjson, github: "guedes/exjson"},
+      {:jason, "~> 1.0"},
       # THEMSELVES.encode type API
-      {:exjson, github: "guedes/exjson"},
-      {:jsex, github: "talentdeficit/jsex"},
-      {:jiffy, github: "davisp/jiffy"},
-      {:mochijson2, github: "bjnortier/mochijson2"},
-      {:exon, github: "betawaffle/exon"}
+      {:exjsx, "~> 4.0"},
+      #{:poison, "~> 3.1"},
+      {:poison, github: "cblage/poison", branch: "master"},
+      {:jsx, "~> 2.8"},
+      #{:mochijson2, github: "bjnortier/mochijson2"},
+      #{:exon, github: "betawaffle/exon"}
     ]
   end
 end
