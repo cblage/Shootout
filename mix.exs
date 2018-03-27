@@ -12,34 +12,19 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
       {:inch_ex, github: "cblage/inch_ex", branch: "master", only: [:dev, :test], runtime: false}
 
   defp ex_doc, do: {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+  defp json(:dev), do: {:json, github: "cblage/elixir-json", branch: "develop", override: true}
+  defp json(:prod), do: {:json, github: "cblage/elixir-json", branch: "develop", override: true}
+  defp poison(:dev), do: {:poison, github: "cblage/poison", branch: "master", override: true}
+  defp poison(:prod), do: {:poison, github: "cblage/poison", branch: "master", override: true}
+  defp jason(:dev), do: {:jason, github: "michalmuskala/jason", branch: "master", override: true}
+  defp jason(:prod), do: {:jason, github: "michalmuskala/jason", branch: "master", override: true}
 
-  def deps(:test) do
-    [
-      ex_doc(),
-      inch_ex(),
-      {:json, git: "git@github.com:cblage/elixir-json.git", branch: "develop", override: true},
-      {:poison, git: "git@github.com:cblage/poison.git", branch: "master"},
-      {:jason, git: "git@github.com:michalmuskala/jason.git", branch: "master"}
-    ]
-  end
+  defp credo,
+    do: {:credo, github: "cblage/credo", branch: "master", only: [:dev, :test], runtime: false}
 
-  def deps(:docs) do
-    [
-      ex_doc(),
-      inch_ex(),
-      {:credo, github: "cblage/credo", branch: "master", only: [:dev, :test], runtime: false}
-    ]
-  end
-
-  def deps(:dev) do
-    [
-      ex_doc(),
-      inch_ex(),
-      {:json, git: "git@github.com:cblage/elixir-json.git", branch: "develop", override: true},
-      {:poison, git: "git@github.com:cblage/poison.git", branch: "master"},
-      {:jason, git: "git@github.com:michalmuskala/jason.git", branch: "master"}
-    ]
-  end
+  def deps(:test), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
+  def deps(:docs), do: [ex_doc(), inch_ex(), credo()]
+  def deps(:dev), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
 
   def deps(:prod) do
     [
