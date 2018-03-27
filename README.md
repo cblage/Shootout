@@ -12,7 +12,7 @@ Several json files are available for test by using the option ```--json-file"res
 
 By default it uses the 8.1M  ```res/big.json``
 
-### Usage
+## Usage
 
 TODO
 
