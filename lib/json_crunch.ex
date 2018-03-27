@@ -1,4 +1,4 @@
-defmodule Shootout do
+defmodule JSONCrunch do
 
   @decode :decode
   @encode :encode

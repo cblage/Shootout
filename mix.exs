@@ -1,8 +1,8 @@
-defmodule JSONShootout_010_SNAPSHOT.Mixfile do
+defmodule JSONCrunch_010_SNAPSHOT.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :json_shootout,
+    [ app: :json_crunch,
       version: "0.1.0-SNAPSHOT",
       elixir: "~> 1.6",
       deps: deps(Mix.env()) ]

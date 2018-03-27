@@ -8,9 +8,9 @@ and more variance in the data used for the test is necessary for real performanc
 
 Most test data from: http://www.json-generator.com.
 
-Several json files are available for test by using the option ```--json-file"res/test.json"```.
+Several json files are available for test by using the option ```--json-file"./res/test.json"```.
 
-By default it uses the 8.1M  ```res/big.json``
+By default it uses the 8.1M  ```./res/big.json```
 
 ## Usage
 
