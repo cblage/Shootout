@@ -6,6 +6,7 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
     [ app: :bench_crunch,
       version: "0.1.0-SNAPSHOT",
       elixir: "~> 1.6",
+      escript: [main_module: BenchCrunch],
       elixirc_options: elixirc_defaults ++ options(Mix.env()),
       deps: deps(Mix.env())]
   end
@@ -13,7 +14,7 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
   defp options(env) when env in [:dev, :test], do: [exlager_level: :debug, exlager_truncation_size: 8096]
   defp options(_), do: []
 
-  def application, do: []
+  def application, do: [env: [mix_env: Mix.env()]]
 
   defp inch_ex, do: {:inch_ex, github: "cblage/inch_ex", branch: "master", only: [:dev, :test], runtime: false}
   defp ex_doc, do: {:ex_doc, "~> 0.16", only: :dev, runtime: false}

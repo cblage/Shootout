@@ -16,7 +16,12 @@ By default it uses the 8.1M  ```./res/json/big.json```
 
 ## Usage
 
-TODO
+```
+
+mix deps.get
+mix compile
+mix escript.build
+./bench_crunch --lib=JSON
 
 ## Results
 

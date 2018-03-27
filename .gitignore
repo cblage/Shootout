@@ -68,5 +68,5 @@ ebin/
 callgrind*
 *.cgrind
 docs/*
-
+bench_crunch
 

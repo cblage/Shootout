@@ -8,6 +8,15 @@ defmodule BenchCrunch do
 
   @default_json "./res/json/big.json"
 
+  def main(args) do
+    {opts, _} = OptionParser.parse!(args, switches: [lib: :string])
+    case opts[:lib] do
+      "JSON" -> _ = profile_json()
+      "Jason" -> _= profile_jason()
+      "Poison" -> _= profile_poison()
+    end
+  end
+
   def profile_json(), do: profile_json(@default_json)
   def profile_jason(), do: profile_jason(@default_json)
   def profile_poison(), do: profile_poison(@default_json)
@@ -39,25 +48,23 @@ defmodule BenchCrunch do
     IO.puts("#{module_str}:#{tag}] Preparing data...")
     data = prepare_cb.()
     IO.puts("#{module_str}:#{tag}] Data ready, starting profiling...")
+    fprof_out = fprof_file_name(module, tag)
+    IO.puts("#{module_str}:#{tag}] FPROF out: #{fprof_out}")
     :fprof.start()
     :fprof.trace([:start])
     bench_result = bench_cb.(data)
     :fprof.trace([:stop])
     :fprof.profile()
-    :fprof.analyse({:dest, fprof_file_name(module_str, tag)})
+    :fprof.analyse({:dest, fprof_out})
     :fprof.stop()
-    IO.puts("#{module_str}:#{tag}] data inspect:")
-    IO.inspect(data)
-    IO.puts("#{module_str}:#{tag}] bench_result inspect:")
-    IO.inspect(bench_result)
     case validate_cb.(data, bench_result) do
       :ok -> IO.puts("#{module_str}:#{tag}] Profiled code behaved as expected")
-      :error -> IO.puts("#{module_str}:#{tag}] Profiled code errored out")
+      :err -> IO.puts("#{module_str}:#{tag}] Profiled code errored out")
     end
   end
 
   defp profile_encode(lib, test_file) do
-    prepare_cb = fn () ->
+    data_cb = fn () ->
       IO.puts("Loading test file: #{test_file}...")
       {:ok, binary} = File.read(test_file)
       IO.puts("Test file loaded, decoding file...")
@@ -69,7 +76,7 @@ defmodule BenchCrunch do
     end
 
     validate_cb = fn(data, bench_result) ->
-      if bench_result == data do
+      if lib.decode!(bench_result) == data do
         IO.puts("encode result equals original binary")
         :ok
       else
@@ -78,7 +85,7 @@ defmodule BenchCrunch do
       end
     end
 
-    validate_and_profile(lib, @encode, prepare_cb, bench_cb, validate_cb)
+    validate_and_profile(lib, @encode, data_cb, bench_cb, validate_cb)
   end
 
   defp profile_decode(lib, test_file) do
@@ -93,7 +100,7 @@ defmodule BenchCrunch do
     end
 
     validate_cb = fn(data, bench_result) ->
-      if bench_result == lib.encode!(data) do
+      if bench_result == lib.decode!(data) do
         IO.puts("decode result equals original binary")
         :ok
       else
@@ -105,21 +112,24 @@ defmodule BenchCrunch do
     validate_and_profile(lib, @decode, data_cb, bench_cb, validate_cb)
   end
 
+  defp env(), do: Application.get_env(:bench_crunch, :mix_env)
   defp env(:bs) do
-    case Mix.env() do
+    case env() do
       :dev -> "bleeding_edge"
       :prod -> "stable"
     end
   end
 
   defp env(:cl) do
-    case Mix.env() do
+    case env() do
       :dev -> 'bleeding_edge'
       :prod -> 'stable'
     end
   end
 
-  defp fprof_file_name(input, encode_or_decode) when is_atom(encode_or_decode) do
-    input ++ '--' ++ Atom.to_charlist(encode_or_decode) ++ '--' ++ env(:cl) ++ '.fprof'
+  defp fprof_file_name(input, tag) when is_atom(tag) do
+    fprof_file = '.fprof/' ++ String.to_charlist(to_string(input)) ++ '--' ++ Atom.to_charlist(tag) ++ '--' ++ env(:cl) ++ '.fprof'
+    IO.puts(fprof_file)
+    fprof_file
   end
 end
