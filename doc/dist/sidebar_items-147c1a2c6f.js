@@ -1,0 +1,1 @@
+sidebarNodes={"extras":[{"id":"api-reference","title":"API Reference","group":"","headers":[{"id":"Modules","anchor":"modules"}]}],"exceptions":[],"modules":[{"id":"BenchCrunch","title":"BenchCrunch","group":"","functions":[{"id":"profile_encode/2","anchor":"profile_encode/2"}]}],"tasks":[]}
