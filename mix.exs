@@ -15,7 +15,7 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
 
   def application, do: []
 
-  defp inch_ex, do: [{:inch_ex, github: "cblage/inch_ex", branch: "master", only: [:dev, :test], runtime: false}]
+  defp inch_ex, do: {:inch_ex, github: "cblage/inch_ex", branch: "master", only: [:dev, :test], runtime: false}
   defp ex_doc, do: {:ex_doc, "~> 0.16", only: :dev, runtime: false}
   defp json(:dev), do: {:json, github: "cblage/elixir-json", branch: "develop", override: true}
   defp json(:prod), do: {:json, "~> 1.0"}
