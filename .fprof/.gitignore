@@ -57,6 +57,7 @@ erl_crash.dump
 mix.lock
 *.trace
 ebin/
+*.fprof
 callgrind*
 *.cgrind
 
@@ -65,8 +66,7 @@ callgrind*
 mix.lock
 *.trace
 ebin/
-*/.fprof
+*.fprof
 callgrind*
 *.cgrind
-
 

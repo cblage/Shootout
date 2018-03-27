@@ -1,27 +1,51 @@
 defmodule Shootout do
+
+  @decode :decode
+  @encode :encode
+
+  defp env(:bs) do
+    case Mix.env() do
+      :dev -> "bleeding_edge"
+      :prod -> "stable"
+    end
+  end
+
+  defp env(:cl) do
+    case Mix.env() do
+      :dev -> 'bleeding_edge'
+      :prod -> 'stable'
+    end
+  end
+
+
+  defp fprof_file_name(input, :encode),
+       do: input <> ':encode:' <> env(:cl) <> '.fprof'
+
+  defp fprof_file_name(input, :decode),
+       do: input <> ':decode:'<> env(:cl) <> '.fprof'
+
 	def profile_json_decode do
 		IO.puts "Preparing to test encoding and decoding."
 		#{:ok, binary} = File.read "test.json"
-		{:ok, binary} = File.read "issue90.json"
-		IO.puts "Test file loaded, test begins..."
+		{:ok, binary} = File.read "big.json"
+		IO.puts "Test file loaded,test begins..."
 
 		:fprof.start()
     :fprof.trace([:start])
 
     {:ok, json_decode_result} = JSON.decode(binary)
-    #{:ok, json_encode_result} = JSON.encode(json_decode_result)
 
     :fprof.trace([:stop])
 
     :fprof.profile()
-    :fprof.analyse({:dest, 'json_encode.fprof'})
+    :fprof.analyse({:dest, fprof_file_nane('json', @decode)})
     :fprof.stop()
 	end
 
   def profile_json_encode do
     IO.puts "Preparing to profile encoding."
     #{:ok, binary} = File.read "test.json"
-    {:ok, binary} = File.read "issue90.json"
+    {:ok, binary} = File.read "big.json"
     IO.puts "Test file loaded, test begins..."
     {:ok, json_decode_result} = JSON.decode(binary)
     :fprof.start()
@@ -31,7 +55,7 @@ defmodule Shootout do
     :fprof.trace([:stop])
 
     :fprof.profile()
-    :fprof.analyse({:dest, 'json_encode.fprof'})
+    :fprof.analyse({:dest,  })
     :fprof.stop()
 
     if (json_encode_result ==  binary) do
@@ -44,7 +68,7 @@ defmodule Shootout do
 	def profile_posion_decode do
 		IO.puts "Preparing to profile decoding."
 		#{:ok, binary} = File.read "test.json"
-		{:ok, binary} = File.read "issue90.json"
+		{:ok, binary} = File.read "big.json"
 		IO.puts "Test file loaded, test begins..."
 
 	  :fprof.start()
@@ -70,7 +94,7 @@ defmodule Shootout do
   def profile_posion_encode do
     IO.puts "Preparing to profile encoding."
     #{:ok, binary} = File.read "test.json"
-    {:ok, binary} = File.read "issue90.json"
+    {:ok, binary} = File.read "big.json"
     IO.puts "Test file loaded, test begins..."
     {:ok, json_decode_result} = Poison.decode(binary)
     :fprof.start()

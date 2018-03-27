@@ -1,11 +1,11 @@
-defmodule Shootout.Mixfile do
+defmodule JSONShootout_010_SNAPSHOT.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :shootout,
-      version: "0.0.1",
+    [ app: :json_shootout,
+      version: "0.1.0-SNAPSHOT",
       elixir: "~> 1.6",
-      deps: deps() ]
+      deps: deps(Mix.env()) ]
   end
 
   # Configuration for the OTP application
@@ -13,24 +13,19 @@ defmodule Shootout.Mixfile do
     []
   end
 
-  # Returns the list of dependencies in the format:
-  # { :foobar, "~> 0.1", git: "https://github.com/elixir-lang/foobar.git" }
-  defp deps do
+  def deps(:dev) do
     [
-      # JSON.encode type API (comment out the ones you're not testing.)
-      #{ :json, "~> 1.0"},
-      { :json, github: "cblage/elixir-json", branch: "master"},
+      {:json, git: "git@github.com:cblage/elixir-json.git", branch: "develop"},
+      {:poison, git: "git@github.com:cblage/poison.git", branch: "master"},
+      {:jason, git: "git@github.com:michalmuskala/jason.git", branch: "master"}
+    ]
+  end
 
-      #{ :jazz, github: "meh/jazz"},
-      #{:exjson, github: "guedes/exjson"},
+  def deps(:prod) do
+    [
+      {:json, "~> 1.0"},
       {:jason, "~> 1.0"},
-      # THEMSELVES.encode type API
-      {:exjsx, "~> 4.0"},
-      #{:poison, "~> 3.1"},
-      {:poison, github: "cblage/poison", branch: "master"},
-      {:jsx, "~> 2.8"},
-      #{:mochijson2, github: "bjnortier/mochijson2"},
-      #{:exon, github: "betawaffle/exon"}
+      {:poison, "~> 3.1"}
     ]
   end
 end
