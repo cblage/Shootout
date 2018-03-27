@@ -13,11 +13,11 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
 
   defp ex_doc, do: {:ex_doc, "~> 0.16", only: :dev, runtime: false}
   defp json(:dev), do: {:json, github: "cblage/elixir-json", branch: "develop", override: true}
-  defp json(:prod), do: {:json, github: "cblage/elixir-json", branch: "develop", override: true}
+  defp json(:prod), do: {:json, "~> 1.0"}
   defp poison(:dev), do: {:poison, github: "cblage/poison", branch: "master", override: true}
-  defp poison(:prod), do: {:poison, github: "cblage/poison", branch: "master", override: true}
+  defp poison(:prod), do: {:poison, "~> 3.1"}
   defp jason(:dev), do: {:jason, github: "michalmuskala/jason", branch: "master", override: true}
-  defp jason(:prod), do: {:jason, github: "michalmuskala/jason", branch: "master", override: true}
+  defp jason(:prod), do: {:jason, "~> 1.0"}
 
   defp credo,
     do: {:credo, github: "cblage/credo", branch: "master", only: [:dev, :test], runtime: false}
@@ -25,12 +25,5 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
   def deps(:test), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
   def deps(:docs), do: [ex_doc(), inch_ex(), credo()]
   def deps(:dev), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
-
-  def deps(:prod) do
-    [
-      {:json, "~> 1.0"},
-      {:jason, "~> 1.0"},
-      {:poison, "~> 3.1"}
-    ]
-  end
+  def deps(:prod), do: [json(:prod),  poison(:prod),  jason(:prod)]
 end
