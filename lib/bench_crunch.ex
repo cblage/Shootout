@@ -6,6 +6,16 @@ defmodule BenchCrunch do
   @decode :decode
   @encode :encode
 
+  def profile_json(file), do: profile_lib(JSON, file)
+  def profile_jason(file), do: profile_lib(Jason, file)
+  def profile_poison(file), do: profile_lib(Poison, file)
+
+  def profile_lib(lib, file) do
+    IO.puts("Profiling #{lib} encoding with file: #{file}")
+    profile_encode(lib, file)
+    IO.puts("Profiling #{lib} decoding with file: #{file}")
+    profile_decode(lib, file)
+  end
 
   defp validate_and_profile(module, tag, prepare_cb, bench_cb, validate_cb) do
     module_str = module |> to_string() |> Macro.underscore()
@@ -27,14 +37,6 @@ defmodule BenchCrunch do
       :ok -> IO.puts("#{module_str}:#{tag}] Profiled code behaved as expected")
       :error -> IO.puts("#{module_str}:#{tag}] Profiled code errored out")
     end
-  end
-
-  def profile_json(file) do
-    lib = JSON
-    IO.puts("Profiling #{lib} encoding with file: #{file}")
-    profile_encode(lib, file)
-    IO.puts("Profiling #{lib} decoding with file: #{file}")
-    profile_decode(lib, file)
   end
 
   defp profile_encode(lib, test_file) do
