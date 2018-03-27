@@ -6,6 +6,12 @@ defmodule BenchCrunch do
   @decode :decode
   @encode :encode
 
+  @default_json "./res/json/big.json"
+
+  def profile_json(), do: profile_json(@default_json)
+  def profile_jason(), do: profile_jason(@default_json)
+  def profile_poison(), do: profile_poison(@default_json)
+
   @doc """
     Profiles elixir-json lib (JSON)
   """
