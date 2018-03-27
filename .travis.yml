@@ -9,5 +9,5 @@ script:
   - mix format --check-formatted
   - MIX_ENV=test mix test
 after_script:
-  - mix deps.get --only docs
-  - MIX_ENV=docs mix inch.report
+  - MIX_ENV=dev mix deps.get
+  - MIX_ENV=dev mix inch.report
