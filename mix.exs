@@ -22,8 +22,8 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
   defp credo,
     do: {:credo, github: "cblage/credo", branch: "master", only: [:dev, :test], runtime: false}
 
-  def deps(:test), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
+  def deps(:test), do: [ex_doc(), inch_ex(), json(:dev), poison(:dev), jason(:dev)]
   def deps(:docs), do: [ex_doc(), inch_ex(), credo()]
-  def deps(:dev), do: [ex_doc(), inch_ex(), json(:dev),  poison(:dev),  jason(:dev)]
-  def deps(:prod), do: [json(:prod),  poison(:prod),  jason(:prod)]
+  def deps(:dev), do: [ex_doc(), inch_ex(), json(:dev), poison(:dev), jason(:dev)]
+  def deps(:prod), do: [json(:prod), poison(:prod), jason(:prod)]
 end
