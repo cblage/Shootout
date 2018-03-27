@@ -67,5 +67,6 @@ ebin/
 */.fprof
 callgrind*
 *.cgrind
+docs/*
 
 
