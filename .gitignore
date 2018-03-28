@@ -69,4 +69,4 @@ callgrind*
 *.cgrind
 docs/*
 bench_crunch
-
+_fprof

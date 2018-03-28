@@ -6,12 +6,11 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
     [ app: :bench_crunch,
       version: "0.1.0-SNAPSHOT",
       elixir: "~> 1.6",
-      escript: [main_module: BenchCrunch],
       elixirc_options: elixirc_defaults ++ options(Mix.env()),
       deps: deps(Mix.env())]
   end
 
-  defp options(env) when env in [:dev, :test], do: [exlager_level: :debug, exlager_truncation_size: 8096]
+  #defp options(env) when env in [:dev, :test], do: [exlager_level: :debug, exlager_truncation_size: 8096]
   defp options(_), do: []
 
   def application, do: [env: [mix_env: Mix.env()]]
@@ -25,9 +24,11 @@ defmodule BenchCrunch_010_SNAPSHOT.Mixfile do
   defp jason(:dev), do: {:jason, github: "michalmuskala/jason", branch: "master", override: true}
   defp jason(:prod), do: {:jason, "~> 1.0"}
   defp credo, do: {:credo, github: "cblage/credo", branch: "master", only: [:dev, :test], runtime: false}
+  defp benchee, do: {:benchee, "~> 0.12.1"}
 
-  def deps(:test), do: [ex_doc(), inch_ex(), json(:dev), poison(:dev), jason(:dev)]
+  defp test_deps, do: [ex_doc(), inch_ex(), json(:dev), poison(:dev), jason(:dev),  benchee()]
+  def deps(:test), do: test_deps()
   def deps(:docs), do: [ex_doc(), inch_ex(), credo()]
-  def deps(:dev), do: [ex_doc(), inch_ex(), json(:dev), poison(:dev), jason(:dev), credo()]
-  def deps(:prod), do: [json(:prod), poison(:prod), jason(:prod)]
+  def deps(:dev), do: test_deps() ++ [credo()]
+  def deps(:prod), do: [json(:prod), poison(:prod), jason(:prod), benchee()]
 end
